@@ -1,7 +1,7 @@
 const numButtons = document.querySelectorAll(".num--button")
 const eqlButton = document.querySelector(".eql--button")
 const clrButton = document.querySelector(".clr--button")
-const operButton = document.querySelector(".oper--button")
+const operButtons = document.querySelectorAll(".oper--button")
 const calcDisplay = document.querySelector(".calc--display")
 let firstNum;
 let secondNum;
@@ -46,6 +46,25 @@ numButtons.forEach(function(button) {
   })
 })
 
+operButtons.forEach(function(button) {
+  button.addEventListener("click", function(e) {
+    if (!firstNum) {
+      firstNum = Number(calcDisplay.textContent)
+    }
+    calcDisplay.textContent = 0
+    operator = e.target.textContent
+  })
+})
+
 clrButton.addEventListener("click", function() {
   calcDisplay.textContent = 0
+})
+
+eqlButton.addEventListener("click", function() {
+  secondNum = Number(calcDisplay.textContent)
+  firstNum = operate(firstNum, secondNum, operator)
+  secondNum = null;
+  operator = null;
+  calcDisplay.textContent = firstNum
+  console.log(firstNum, secondNum, operator)
 })
