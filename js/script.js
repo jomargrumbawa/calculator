@@ -36,35 +36,49 @@ function operate(firstNum, secondNum, operator) {
   }
 }
 
+function renderDisplay(string) {
+  if (calcDisplay.textContent === "0") {
+    calcDisplay.textContent = string
+  } else {
+    calcDisplay.textContent += string
+  }
+}
+
+function setNumber(num) {
+  if (!firstNum) {
+    firstNum = num
+  } else if (firstNum && operator) {
+    secondNum = num
+  }
+}
+
+function setOperator(symbol) {
+  operator = symbol
+}
+
 numButtons.forEach(function(button) {
   button.addEventListener("click", function(e) {
-    if (calcDisplay.textContent === "0") {
-      calcDisplay.textContent = e.target.textContent
-    } else {
-      calcDisplay.textContent += e.target.textContent
-    }
+    renderDisplay(e.target.textContent)
   })
 })
 
 operButtons.forEach(function(button) {
   button.addEventListener("click", function(e) {
-    if (!firstNum) {
-      firstNum = Number(calcDisplay.textContent)
-    }
+    setNumber(Number(calcDisplay.textContent))
+    setOperator(e.target.textContent)
     calcDisplay.textContent = 0
-    operator = e.target.textContent
   })
 })
 
-clrButton.addEventListener("click", function() {
-  calcDisplay.textContent = 0
-})
-
-eqlButton.addEventListener("click", function() {
-  secondNum = Number(calcDisplay.textContent)
-  firstNum = operate(firstNum, secondNum, operator)
-  secondNum = null;
-  operator = null;
-  calcDisplay.textContent = firstNum
-  console.log(firstNum, secondNum, operator)
+eqlButton.addEventListener("click", function(e) {
+  if (!firstNum || !operator) {
+    return null
+  } else {
+    setNumber(Number(calcDisplay.textContent))
+    let output = operate(firstNum, secondNum, operator)
+    firstNum = output
+    secondNum = null
+    operator = null
+    calcDisplay.textContent = firstNum
+  }
 })
